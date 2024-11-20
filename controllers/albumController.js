@@ -50,5 +50,18 @@ export const cantAlbumArtista = async (req, res) => {
     }
 };
 
+export const artistaMasAlbumes = async (req, res) => {
+    try {
+        let agg = albumModel.aggregate([
+        { $group: { artista: "$artista", cantAlbum: { $count: "$nombre" } } },
+        { $sort: { cantAlbum: -1 } }, 
+        { $limit: 1 }
+        ])
+        res.status(200).send(agg);
+    } catch (error) {
+        console.error(error)
+    }
+};
+
 
 
